@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chinaw Alone Superhero Quiz</title>
+<style>
+    body {
+        font-family: Verdana, sans-serif;
+        background-color: black;
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+        overflow-x: hidden;
+    }
+    h1, h2 {
+        color: gold;
+        text-shadow: 2px 2px darkred;
+    }
+    .page {
+        display: none; /* hide by default */
+    }
+    button {
+        padding: 15px 30px;
+        margin: 15px 0;
+        border-radius: 8px;
+        border: none;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: block;
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .option {
+        background-color: darkblue;
+        color: white;
+    }
+    .option:hover {
+        background-color: red;
+    }
+    .question {
+        margin: 30px 0;
+        font-size: 1.3em;
+    }
+    #result {
+        margin-top: 20px;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    #congrats {
+        display: none;
+        font-size: 3em;
+        color: gold;
+        text-shadow: 2px 2px black;
+        margin-top: 30px;
+        position: relative;
+        z-index: 2;
+    }
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        opacity: 0.8;
+        pointer-events: none;
+        border-radius: 2px;
+        transform: rotate(0deg);
+    }
+    .sparkle {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background-color: yellow;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: sparkleAnim 1s infinite;
+    }
+    @keyframes sparkleAnim {
+        0% { transform: scale(0.5); opacity: 0.7; }
+        50% { transform: scale(1.5); opacity: 1; }
+        100% { transform: scale(0.5); opacity: 0.7; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Welcome Page -->
+<div id="welcomePage" class="page" style="display:block;">
+    <h1>Welcome to Chinaw Alone Superhero Quiz!</h1>
+    <button onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<!-- Quiz Page -->
+<div id="quizPage" class="page">
+    <h2>Chinaw Alone Superhero Quiz!</h2>
+    <div id="quizContainer">
+        <div class="question" id="question">Question will appear here</div>
+        <div id="options">
+            <button class="option" onclick="checkAnswer(this)">Option A</button>
+            <button class="option" onclick="checkAnswer(this)">Option B</button>
+            <button class="option" onclick="checkAnswer(this)">Option C</button>
+            <button class="option" onclick="checkAnswer(this)">Option D</button>
+        </div>
+    </div>
+    <div id="result"></div>
+    <div id="congrats">🎉 CONGRATULATIONS! 🎉</div>
+</div>
+
+<script>
+const quizData = [
+    {q:"Who is known as the Dark Knight?", a:"Batman", options:["Superman","Iron Man","Batman","Flash"]},
+    {q:"Which villain tries to steal Thor's hammer?", a:"Loki", options:["Loki","Ultron","Joker","Thanos"]},
+    {q:"Who is Spider-Man's greatest enemy?", a:"Green Goblin", options:["Doctor Doom","Green Goblin","Venom","Magneto"]},
+    {q:"Which hero is known as the Man of Steel?", a:"Superman", options:["Superman","Hawkeye","Wolverine","Aquaman"]},
+    {q:"Who is the leader of the X-Men?", a:"Professor X", options:["Cyclops","Professor X","Magneto","Deadpool"]},
+    {q:"Which villain uses a purple gauntlet to destroy half the universe?", a:"Thanos", options:["Loki","Ultron","Thanos","Red Skull"]},
+    {q:"Who is the king of Wakanda?", a:"Black Panther", options:["Black Panther","Aquaman","Doctor Strange","Hulk"]},
+    {q:"Which villain is known as the Clown Prince of Crime?", a:"Joker", options:["Joker","Loki","Green Goblin","Magneto"]},
+    {q:"Which hero wields a shield made of vibranium?", a:"Captain America", options:["Iron Man","Captain America","Batman","Flash"]},
+    {q:"Which villain is obsessed with symmetry?", a:"Two-Face", options:["Riddler","Two-Face","Joker","Scarecrow"]},
+    {q:"Who is known for his super speed?", a:"Flash", options:["Flash","Quicksilver","Batman","Spider-Man"]},
+    {q:"Which villain created Ultron?", a:"Tony Stark", options:["Tony Stark","Loki","Thanos","Doctor Doom"]},
+    {q:"Who can manipulate reality with a wand?", a:"Scarlet Witch", options:["Scarlet Witch","Hawkeye","Black Panther","Iron Man"]},
+    {q:"Which villain is a genius with a green suit?", a:"Riddler", options:["Riddler","Joker","Loki","Green Goblin"]},
+    {q:"Which hero is a billionaire playboy?", a:"Iron Man", options:["Batman","Iron Man","Superman","Hulk"]}
+];
+
+let current = 0;
+
+function startQuiz() {
+    document.getElementById("welcomePage").style.display = "none";
+    document.getElementById("quizPage").style.display = "block";
+    showQuestion();
+}
+
+function showQuestion() {
+    if(current < quizData.length) {
+        const q = quizData[current];
+        document.getElementById("question").textContent = q.q;
+        const btns = document.querySelectorAll(".option");
+        btns.forEach((btn, i) => {
+            btn.textContent = q.options[i];
+            btn.style.backgroundColor = "darkblue";
+            btn.disabled = false;
+        });
+        document.getElementById("result").textContent = "";
+    } else {
+        endQuiz();
+    }
+}
+
+function checkAnswer(btn) {
+    const correct = quizData[current].a;
+    if(btn.textContent === correct) {
+        btn.style.backgroundColor = "green";
+        document.getElementById("result").textContent = "✅ Correct!";
+    } else {
+        btn.style.backgroundColor = "red";
+        document.getElementById("result").textContent = `❌ Dang! The answer was ${correct}`;
+    }
+    document.querySelectorAll(".option").forEach(b => b.disabled = true);
+    setTimeout(() => {
+        current++;
+        showQuestion();
+    }, 1000);
+}
+
+function endQuiz() {
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("congrats").style.display = "block";
+    launchConfetti();
+    launchSparkles();
+}
+
+function launchConfetti() {
+    const colors = ["red","gold","blue","green","purple"];
+    for(let i=0;i<150;i++){
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        confetti.style.left = Math.random()*window.innerWidth + "px";
+        confetti.style.width = Math.random()*8 + 5 + "px";
+        confetti.style.height = Math.random()*8 + 5 + "px";
+        confetti.style.animation = `fall ${Math.random()*3+2}s linear forwards`;
+        document.body.appendChild(confetti);
+    }
+}
+
+function launchSparkles() {
+    for(let i=0;i<50;i++){
+        let sparkle = document.createElement("div");
+        sparkle.classList.add("sparkle");
+        sparkle.style.left = Math.random()*window.innerWidth + "px";
+        sparkle.style.top = Math.random()*window.innerHeight + "px";
+        document.body.appendChild(sparkle);
+    }
+}
+
+const style = document.createElement('style');
+style.innerHTML = `
+    @keyframes fall {
+        0% {transform: translateY(0) rotate(0deg);}
+        100% {transform: translateY(100vh) rotate(360deg);}
+    }
+`;
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>
