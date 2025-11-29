@@ -1,184 +1,73 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chinaw Alone Superhero Quiz</title>
-<style>
-body {
-  font-family: Verdana, sans-serif;
-  background-color: black;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
-h1, h2 {
-  color: gold;
-}
-
-button {
-  padding: 14px 28px;
-  margin: 10px 0 14px 0;
-  border-radius: 6px;
-  border: none;
-  font-size: 1.1em;
-  cursor: pointer;
-  display: block;
-  width: 200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.option {
-  background-color: darkblue;
-  color: white;
-}
-
-.option:hover {
-  background-color: red;
-}
-
-.question {
-  margin: 28px 0;
-  font-size: 1.3em;
-}
-
-#result {
-  margin-top: 18px;
-  font-size: 1.3em;
-  font-weight: bold;
-}
-
-#congrats {
-  display: none;
-  font-size: 2em;
-  color: gold;
-  margin-top: 30px;
-}
-
-.page {
-  display: none;
-}
-</style>
+    <meta charset="UTF-8">
+    <title>Chinaw Alone Superhero Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightblue;
+            text-align: center;
+            padding: 30px;
+        }
+        #titleBox {
+            background-color: Green;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: Yellow;
+            color: RED;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: brown;
+        }
+        img {
+            width: 220px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
-<div id="welcome" class="page" style="display:block;">
-  <h1>Welcome to Chinaw Alone Superhero Quiz!</h1>
-  <p>Test your knowledge about heroes and villains!</p>
-  <button onclick="goStart()">Start Quiz</button>
+<div id="titleBox">
+    <h2>Welcome to Chinaw Alone's Superhero Quiz</h2>
+    <p>Test your superhero knowledge and see how many you get right.</p>
 </div>
 
+<img id="welcomeImg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpZ7rSSQgE6Qau_8sHxcYFnJ7LpfUlIJwF30yEj2pSbw&s=10">
 
-<div id="quiz" class="page">
-  <h2>Chinaw Alone Superhero Quiz!</h2>
-  <div id="areaQ">
-    <div class="question" id="qHere">Question will appear here</div>
-    <div id="btnsHere">
-      <button class="option" onclick="ansCheck(this)">Answer 1</button>
-      <button class="option" onclick="ansCheck(this)">Answer 2</button>
-      <button class="option" onclick="ansCheck(this)">Answer 3</button>
-      <button class="option" onclick="ansCheck(this)">Answer 4</button>
-    </div>
-  </div>
+<br><br>
 
-  <div id="result"></div>
-  <div id="congrats">🎉 YOU FINISHED! 🎉</div>
-  <button id="restartBtn" style="display:none;" onclick="doRestart()">Restart Quiz</button>
-</div>
-
+<button onclick="goQuiz()"><a href="page2.html">Start Quiz</a></button>
 
 <script>
-
-var qList = [
-  {q:"Who is known as the Dark Knight?", a:"Batman", c:["Superman","Iron Man","Batman","Flash"]},
-
-  {q:"Which villain tries to steal Thor's hammer?", a:"Loki", c:["Loki","Ultron","Joker","Thanos"]},
-
-  {q:"Who is Spider-Man's greatest enemy?", a:"Green Goblin", c:["Doctor Doom","Green Goblin","Venom","Magneto"]},
-
-  {q:"Which hero is known as the Man of Steel?", a:"Superman", c:["Superman","Hawkeye","Wolverine","Aquaman"]},
-
-  {q:"Who is the leader of the X-Men?", a:"Professor X", c:["Cyclops","Professor X","Magneto","Deadpool"]},
-
-  {q:"Which villain uses a purple gauntlet to destroy half the universe?", a:"Thanos", c:["Loki","Ultron","Thanos","Red Skull"]},
-
-  {q:"Who is the king of Wakanda?", a:"Black Panther", c:["Black Panther","Aquaman","Doctor Strange","Hulk"]},
-
-  {q:"Which villain is known as the Clown Prince of Crime?", a:"Joker", c:["Joker","Loki","Green Goblin","Magneto"]},
-
-  {q:"Which hero wields a shield made of vibranium?", a:"Captain America", c:["Iron Man","Captain America","Batman","Flash"]},
-
-  {q:"Which villain is obsessed with symmetry?", a:"Two-Face", c:["Riddler","Two-Face","Joker","Scarecrow"]},
-
-  {q:"Who is known for his super speed?", a:"Flash", c:["Flash","Quicksilver","Batman","Spider-Man"]},
-
-  {q:"Which villain created Ultron?", a:"Tony Stark", c:["Tony Stark","Loki","Thanos","Doctor Doom"]},
-
-  {q:"Who can manipulate reality with a wand?", a:"Scarlet Witch", c:["Scarlet Witch","Hawkeye","Black Panther","Iron Man"]},
-
-  {q:"Which villain is a genius with a green suit?", a:"Riddler", c:["Riddler","Joker","Loki","Green Goblin"]},
-
-  {q:"Which hero is a billionaire playboy?", a:"Iron Man", c:["Batman","Iron Man","Superman","Hulk"]}
-]
-
-var curQ=0
-
-function goStart(){
-  document.getElementById("welcome").style.display="none"
-  document.getElementById("quiz").style.display="block"
-  showQ()
-}
-
-function showQ(){
-  if(curQ<qList.length){
-    var thisQ = qList[curQ]
-    document.getElementById("qHere").textContent=thisQ.q
-    var btns=document.querySelectorAll(".option")
-    for(var i=0;i<btns.length;i++){
-      btns[i].textContent=thisQ.c[i]
-      btns[i].style.backgroundColor="darkblue"
-      btns[i].disabled=false
-      btns[i].style.marginTop=(10 + Math.floor(Math.random()*5))+"px"
+    function goQuiz() {
+        window.location.href = "quiz.html";
     }
-    document.getElementById("result").textContent=""
-  } else {
-    document.getElementById("areaQ").style.display="none"
-    document.getElementById("congrats").style.display="block"
-    document.getElementById("restartBtn").style.display="block"
-  }
-}
 
+    function changeTitle() {
+        document.getElementById("titleBox").style.backgroundColor = "Darkblue";
+    }
 
-function ansCheck(b){
-  var right=qList[curQ].a
-  if(b.textContent==right){
-    b.style.backgroundColor="green"
-    document.getElementById("result").textContent="✅ Correct!"
-  } else {
-    b.style.backgroundColor="red"
-    document.getElementById("result").textContent="❌ Wrong! Answer: "+right
-  }
-  var btns=document.querySelectorAll(".option")
-  for(var i=0;i<btns.length;i++){
-    btns[i].disabled=true
-  }
-  setTimeout(function(){
-    curQ++
-    showQ()
-  },1100)
-}
+    function swapPic() {
+        const img = document.getElementById("welcomeImg");
+        if (img.src.includes("71h8A6GkAEL")) {
+            img.src = "https://i.pinimg.com/736x/b7/1d/91/b71d918308b2629e66b31b38132d986d.jpg";
+        } else {
+            img.src = "https://m.media-amazon.com/images/I/71h8A6GkAEL._AC_UF1000,1000_QL80_.jpg";
+        }
+    }
 
-
-function doRestart(){
-  curQ=0
-  document.getElementById("areaQ").style.display="block"
-  document.getElementById("congrats").style.display="none"
-  document.getElementById("restartBtn").style.display="none"
-  showQ()
-}
-
+    document.getElementById("welcomeImg").addEventListener("click", swapPic);
+    document.getElementById("titleBox").addEventListener("mouseover", changeTitle);
 </script>
 
 </body>
