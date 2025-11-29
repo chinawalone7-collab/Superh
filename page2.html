@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chinaw Alone Quiz</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Verdana, sans-serif;
+            text-align: center;
+            padding: 30px;
+        }
+        #qBox {
+            font-size: 20px;
+            margin: 25px 0;
+        }
+        .opt {
+            display: block;
+            width: 70%;
+            margin: 10px auto;
+            padding: 12px;
+            background-color: White;
+            color: Black;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .opt:hover {
+            background-color: yellow;
+        }
+        #endMsg {
+            display: none;
+            font-size: 28px;
+            color: gold;
+            margin-top: 30px;
+        }
+        img {
+            width: 160px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Chinaw Alone Superhero Quiz</h2>
+
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTZ1_KW5241dGnh4gk-faiLcbNi-WlJd3vSBlfSINlLg&s=10">
+
+<div id="qBox"></div>
+<div id="choices"></div>
+<div id="endMsg">You finished the quiz. Nice job!</div>
+
+<script>
+    const data = [
+        {q:"Who is the Dark Knight?", a:"Batman", o:["Batman","Iron Man","Flash","Captain America"]},
+        {q:"Who is Thor’s brother?", a:"Loki", o:["Hulk","Loki","Thanos","Ultron"]},
+        {q:"Who leads the Avengers?", a:"Captain America", o:["Batman","Wolverine","Captain America","Flash"]},
+        {q:"Spider-Man's real name?", a:"Peter Parker", o:["Peter Parker","Clark Kent","Bruce Wayne","Tony Stark"]},
+        {q:"King of Wakanda?", a:"Black Panther", o:["Thor","Black Panther","Aquaman","Hawkeye"]},
+        {q:"Which villain laughs the most?", a:"Joker", o:["Joker","Thanos","Loki","Ultron"]},
+        {q:"Who runs the fastest?", a:"Flash", o:["Flash","Hulk","Iron Man","Black Widow"]},
+        {q:"Who snaps the universe?", a:"Thanos", o:["Thanos","Joker","Loki","Magneto"]},
+        {q:"Who has metal claws?", a:"Wolverine", o:["Wolverine","Batman","Hulk","Thor"]},
+        {q:"Who built the Iron Man suit?", a:"Tony Stark", o:["Tony Stark","Bruce Wayne","Peter Parker","Hawkeye"]}
+    ];
+
+    let index = 0;
+
+    function loadQ() {
+        if (index >= data.length) {
+            finishQuiz();
+            return;
+        }
+        const q = data[index];
+        document.getElementById("qBox").textContent = q.q;
+
+        const box = document.getElementById("choices");
+        box.innerHTML = "";
+
+        q.o.forEach(choice => {
+            const btn = document.createElement("button");
+            btn.className = "opt";
+            btn.textContent = choice;
+            btn.onclick = () => check(choice);
+            box.appendChild(btn);
+        });
+    }
+
+    function check(choice) {
+        const correct = data[index].a;
+
+        if (choice === correct) {
+            document.body.style.backgroundColor = "darkgreen";
+        } else {
+            document.body.style.backgroundColor = "darkred";
+        }
+
+        setTimeout(() => {
+            document.body.style.backgroundColor = "black";
+            index++;
+            loadQ();
+        }, 600);
+    }
+
+    function finishQuiz() {
+        document.getElementById("qBox").style.display = "none";
+        document.getElementById("choices").style.display = "none";
+        document.getElementById("endMsg").style.display = "block";
+    }
+
+    loadQ();
+</script>
+
+</body>
+</html>
+
